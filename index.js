@@ -25,7 +25,7 @@ mongoose.connect(config.mongoURI, {
   .catch(err => console.log(err));
 
 
-app.get('/', (req, res) => res.send('Hello 수정이 바로 반영이 되었습니까?'));
+app.get('/', (req, res) => res.send('Hello 수정이 바로 반영??'));
 
 // '/registe' 즉 회원가입 위한 라우터 생성 (회원가입 할때 필요한 정보들을 client에서 가져오면 그것들을 데이터 베이스에 넣어준다.)
 app.post('/register', (req, res) => {
