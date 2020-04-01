@@ -58,7 +58,7 @@ app.post('/register', (req, res) => {
 
 // 로그인 기능 라우터 생성
 // 1.사용자가 email입력시(요청시) DB에서 정보 찾기 2.비번 맞는지 확인 3.토큰생성하기
-app.post('/api/users/login', (req, res) => {
+app.post('/login', (req, res) => {
 
   // 1. 요청된 이메일을 DB에 있는지 찾기
   // User model가져온후 mongoDB에서 제공하는 findOne method이용
@@ -85,8 +85,8 @@ app.post('/api/users/login', (req, res) => {
         // 쿠키에 저장
         res.cookie("x_auth", user.token)
           .status(200) // 성공의미
-          .json({loginSuccess:true, userId:user_id})
-     })
+          .json({loginSuccess:true, userId:user._id})
+      })
     })
   })
 });
