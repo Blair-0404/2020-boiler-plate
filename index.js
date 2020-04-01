@@ -31,7 +31,7 @@ mongoose.connect(config.mongoURI, {
   .catch(err => console.log(err));
 
 
-app.get('/', (req, res) => res.send('Hello 수정이 바로 반영??'));
+app.get('/', (req, res) => res.send('Hello login...'));
 
 
 // '/registe' 즉 회원가입 위한 라우터 생성 (회원가입 할때 필요한 정보들을 client에서 가져오면 그것들을 데이터 베이스에 넣어준다.)
@@ -58,7 +58,7 @@ app.post('/register', (req, res) => {
 
 // 로그인 기능 라우터 생성
 // 1.사용자가 email입력시(요청시) DB에서 정보 찾기 2.비번 맞는지 확인 3.토큰생성하기
-app.post('./login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
 
   // 1. 요청된 이메일을 DB에 있는지 찾기
   // User model가져온후 mongoDB에서 제공하는 findOne method이용
