@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-//비밀번호 암호화를 위해 bcrypt 불러오기
+//비밀번호 암호화를 위해 bcrypt 불러오기(사용법 1.자릿 수 정하고 salt생성 2. 생성된 salt로 비번암호화시키)
 const bcrypt = require('bcrypt');
-// bcrypt사용법 1.자릿 수 정하고 salt생성 2. 생성된 salt로 비번암호화시키
-// 1. salt생성 전 자릿수 정하기
 const saltRounds = 10;
+
+const jwt = require('jsonwebtoken');
 
 
 const userSchema = mongoose.Schema({
@@ -74,8 +74,24 @@ userSchema.methods.comparePassword = function(plainPassword, callbackFunc) {
     if(err) return callbackFunc(err),
       callbackFunc(null, isMatch)
   })
+};
 
-}
+userSchema.methods.generateToken = function(cb) {
+  // jsinwebtoken을 이용해서 토큰 생성하기
+
+  var user = this;
+
+  // user._id는 mongoDB에 받은 데이터의_id 의미
+  var token = jwt.sign(user._id.toHexString(), 'secretToken');
+  // 위 코드는 이처럼 실행되고 user._id + 'secretToken' = token
+  // 'secretToken'만으로 그 유저의 user_id가 뭔지 알 수 있게된다.
+
+  user.token = token; // 위에서 만든 토큰 넣어주기
+  user.save(function(err, user) {
+    if(err) return cb(err); // 에러있다면 콜백으로 에러 전달
+    cb(null, user) // save가 잘 됬을시에는 에러는 없고 user정보만 전달
+  })
+};
 
 
 const User = mongoose.model('User', userSchema);

@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const port = 5000;
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // 정보보호 환경변수 설정한 코드 가져오기 위해
 const config = require('./config/key');
@@ -16,6 +17,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //application/json을 분석해서 가져오게 함
 app.use(bodyParser.json());
+
+// 다운받은 cookieparser모듈 사용하기
+app.use(cookieParser());
 
 const mongoose = require('mongoose');
 
@@ -73,10 +77,16 @@ app.post('./login', (req, res) => {
       if(!isMatch)
         return res.json({loginSuccess: false, message: "PW가 틀렸습니다."});
 
-      // 비밀번호까지 맞다면 토큰을 생성하기 (User.js에 generateToke 메소드를 생성해서 사용)
+      // 비밀번호까지 맞다면 username에 대한 토큰을 생성하기 (User.js에 generateToke 메소드를 생성해서 사용)
       user.generateToken((err, user) => {
+        if(err) return res.status(400).send(err);
 
-      })
+        // 받아온 토큰을 저장한다. 어디에? 1. 쿠키 2. 로컬스토리지 등 (개발자도구-Application)미
+        // 쿠키에 저장
+        res.cookie("x_auth", user.token)
+          .status(200) // 성공의미
+          .json({loginSuccess:true, userId:user_id})
+     })
     })
   })
 });

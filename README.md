@@ -18,7 +18,8 @@
     2. 이메일이 있다면 비밀번호가 맞는 비밀번호인지 확인하기
         - User.js에 comparePassword 메소드를 생성해서 사용
         - hashedPW를 복호화할수 없으니 plainPW를 암호화해서 hashedPW와 같은지 확인해야 한다.
-    3. 비밀번호까지 맞다면 토큰을 생성하기
-        - User.js에 generateToke 메소드를 생성해서 사용
-
+    3. 비밀번호까지 맞다면 username에 대한 토큰을 생성하기 (JSONWEBTOKEN라이브러리 다운)
+        - User.js에 generateToke 메소드(토큰 생성 후 전달)를 생성해서 사용
+        - 받아온 토큰 저장하기 - *쿠키* od 로컬스토리지
+        - 쿠키로 저장 -> Cookiesparser모듈 사용
 
